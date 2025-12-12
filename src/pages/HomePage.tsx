@@ -1,10 +1,12 @@
 import { Activity } from "react";
 import Header from "../components/Header";
 import Products from "../components/Product";
-import { products } from "../data/products";
 import "./homepage.css";
+import useProduct from "../hooks/useProduct";
 
 export default function HomePage() {
+  const { products } = useProduct();
+
   return (
     <>
       <Header />
