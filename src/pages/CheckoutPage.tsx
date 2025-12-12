@@ -15,7 +15,7 @@ export default function CheckoutPage() {
 
           <div className="checkout-header-middle-section">
             Checkout (
-            <a className="return-to-home-link" href="index.html">
+            <a className="return-to-home-link" href="/">
               3 items
             </a>
             )
