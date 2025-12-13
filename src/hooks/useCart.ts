@@ -6,25 +6,25 @@ export default function useCart() {
     const [carts, setCarts] = useState((): CartItem[] => [])
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/cart-items').then((response) => {
+        axios.get('/api/cart-items?expand=product').then((response) => {
             setCarts(response.data)
         })
     }, [])
 
-    function getCartTotalItem() {
-        if (carts.length > 0) {            
-            let total = 0
+    function updateDeliveryOption(productId: string, deliveryOptionId: string) {
+        const cartSelected = carts.findIndex(cart => cart.productId == productId)
 
-            carts.forEach((cartItem) => total += cartItem.quantity)
 
-            return total;
+        if (cartSelected != -1) {
+            setCarts(prev => {
+                prev[cartSelected].deliveryOptionId = deliveryOptionId
+                return [...prev]
+            })
         }
-
-        return 0;
     }
 
     return {
         carts,
-        getCartTotalItem
+        updateDeliveryOption
     }
 }

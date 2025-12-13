@@ -1,9 +1,18 @@
 import { Link } from "react-router";
-import "./header.css"
-import useCart from "../hooks/useCart";
+import "./header.css";
+import type { CartItem } from "../types/cartItem";
 
-export default function Header() {
-  const { getCartTotalItem } = useCart()
+type HeaderProps = {
+  carts: CartItem[];
+};
+
+export default function Header({ carts }: HeaderProps) {
+  let totalCartItem = 0;
+
+  if (carts.length > 0) {
+    carts.forEach((cartItem) => (totalCartItem += cartItem.quantity));
+  }
+
   return (
     <div className="header">
       <div className="left-section">
@@ -28,7 +37,7 @@ export default function Header() {
 
         <Link className="cart-link header-link" to="/checkout">
           <img className="cart-icon" src="images/icons/cart-icon.png" />
-          <div className="cart-quantity">{getCartTotalItem()}</div>
+          <div className="cart-quantity">{totalCartItem}</div>
           <div className="cart-text">Cart</div>
         </Link>
       </div>
