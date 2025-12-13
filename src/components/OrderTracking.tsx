@@ -43,9 +43,9 @@ export default function OrderTracking({
       />
 
       <div className="progress-labels-container">
-        <div className="progress-label">Preparing</div>
-        <div className="progress-label">Shipped</div>
-        <div className="progress-label">Delivered</div>
+        <div className={`progress-label ${progress < 33 ? 'current-status' : ''}`}>Preparing</div>
+        <div className={`progress-label ${progress > 50 && progress < 100 ? 'current-status' : ''}`}>Shipped</div>
+        <div className={`progress-label ${progress == 100 ? 'current-status' : ''}`}>Delivered</div>
       </div>
 
       <div className="progress-bar-container">
