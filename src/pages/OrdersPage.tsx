@@ -20,7 +20,7 @@ export default function OrdersPage({ carts, orders }: OrdersPageProps) {
         <div className="orders-grid">
           <Activity mode={orders.length > 0 ? "visible" : "hidden"}>
             {orders.map((order) => (
-              <OrderItem orderItem={order} />
+              <OrderItem key={order.id} orderItem={order} />
             ))}
           </Activity>
         </div>
