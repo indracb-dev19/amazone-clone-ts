@@ -30,7 +30,7 @@ export default function OrderItem({ orderItem }: OrderItemProps) {
 
       <div className="order-details-grid">
         <Activity mode={orderItem.products.length > 0 ? 'visible' : 'hidden'} >
-            {orderItem.products.map(product => <OrderDetail key={product.productId} item={product} />)}
+            {orderItem.products.map(product => <OrderDetail key={product.productId} orderId={orderItem.id} item={product} />)}
         </Activity>
       </div>
     </div>

@@ -1,38 +1,24 @@
+import { useParams } from "react-router";
 import Header from "../components/Header";
+import type { CartItem } from "../types/cartItem";
 import "./tracking-page.css";
+import { Activity } from "react";
+import OrderTracking from "../components/OrderTracking";
 
-export default function TrackingPage() {
+type TrackingPageProps = {
+  carts: CartItem[];
+};
+export default function TrackingPage({ carts }: TrackingPageProps) {
+  const { productId } = useParams();
+
   return (
     <>
-      <Header />
+      <Header carts={carts} />
       <div className="tracking-page">
         <div className="order-tracking">
-          <a className="back-to-orders-link link-primary" href="/orders">
-            View all orders
-          </a>
-
-          <div className="delivery-date">Arriving on Monday, June 13</div>
-
-          <div className="product-info">
-            Black and Gray Athletic Cotton Socks - 6 Pairs
-          </div>
-
-          <div className="product-info">Quantity: 1</div>
-
-          <img
-            className="product-image"
-            src="images/products/athletic-cotton-socks-6-pairs.jpg"
-          />
-
-          <div className="progress-labels-container">
-            <div className="progress-label">Preparing</div>
-            <div className="progress-label current-status">Shipped</div>
-            <div className="progress-label">Delivered</div>
-          </div>
-
-          <div className="progress-bar-container">
-            <div className="progress-bar"></div>
-          </div>
+          <Activity mode={productId === undefined ? "hidden" : "visible"}>
+            <OrderTracking productId={productId as string} />
+          </Activity>
         </div>
       </div>
     </>

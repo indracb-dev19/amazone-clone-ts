@@ -4,9 +4,10 @@ import { msToDate } from "../utils/converter";
 
 type OrderDetailProps = {
   item: Omit<CartItem, "updatedAt" | "createdAt">;
+  orderId: string
 };
 
-export default function OrderDetail({ item }: OrderDetailProps) {
+export default function OrderDetail({ item, orderId}: OrderDetailProps) {    
   return (
     <>
       <div className="product-image-container">
@@ -26,7 +27,7 @@ export default function OrderDetail({ item }: OrderDetailProps) {
       </div>
 
       <div className="product-actions">
-        <Link to="/tracking">
+        <Link to={`/tracking/${orderId}/${item.productId}`}>
           <button className="track-package-button button-secondary">
             Track package
           </button>
