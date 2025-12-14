@@ -3,6 +3,7 @@ import type { CartItem } from "../types/cartItem";
 import type { PaymentSummary as PaymentSummaryType } from "../types/paymentSummary";
 import { centsToDollar } from "../utils/converter";
 import { LoaderCircleIcon } from "./LoaderCircleIcon";
+import { useNavigate } from "react-router";
 
 type PaymentSummaryProps = {
   paymentSummary: PaymentSummaryType | undefined;
@@ -17,6 +18,7 @@ export default function PaymentSummary({
   onSubmitOrder,
   fetchCartData,
 }: PaymentSummaryProps) {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit() {
@@ -33,6 +35,7 @@ export default function PaymentSummary({
 
         setIsLoading(false);
         fetchCartData();
+        navigate("/orders");
       }, 3000);
     }
   }
