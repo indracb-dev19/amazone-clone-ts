@@ -7,16 +7,48 @@ import useCart from "./hooks/useCart";
 import useOrder from "./hooks/useOrder";
 
 function App() {
-  const { carts, updateDeliveryOption, addProductToCart } = useCart();
-  const { orders } = useOrder();
+  const {
+    carts,
+    paymentSummary,
+    updateDeliveryOption,
+    addProductToCart,
+    deleteProductFromCart,
+    updateQuantity,
+    fetchData
+  } = useCart();
+  const { orders, submitOrder } = useOrder();
   return (
     <>
       <Routes>
         {/* <Route path="/" element={<HomePage />} /> */}
-        <Route index element={<HomePage carts={carts} onAddProductToCart={addProductToCart} />} />
-        <Route path="/checkout" element={<CheckoutPage carts={carts} onUpdateDeliveryOption={updateDeliveryOption} orders={orders} />} />
-        <Route path="/orders" element={<OrdersPage carts={carts} orders={orders} />} />
-        <Route path="/tracking/:orderId/:productId" element={<TrackingPage carts={carts} />} />
+        <Route
+          index
+          element={
+            <HomePage carts={carts} onAddProductToCart={addProductToCart} />
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <CheckoutPage
+              carts={carts}
+              onUpdateDeliveryOption={updateDeliveryOption}
+              paymentSummary={paymentSummary}
+              onDeleteProduct={deleteProductFromCart}
+              onUpdateQuantity={updateQuantity}
+              onSubmitOrder={submitOrder}
+              fetchCartData={fetchData}
+            />
+          }
+        />
+        <Route
+          path="/orders"
+          element={<OrdersPage carts={carts} orders={orders} />}
+        />
+        <Route
+          path="/tracking/:orderId/:productId"
+          element={<TrackingPage carts={carts} />}
+        />
       </Routes>
     </>
   );

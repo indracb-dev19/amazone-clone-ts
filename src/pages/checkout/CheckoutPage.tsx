@@ -3,19 +3,27 @@ import type { CartItem } from "../../types/cartItem";
 import "./checkout-page.css";
 import CheckoutHeader from "./CheckoutHeader";
 import SummaryCartItem from "../../components/SummaryCartItem";
-import type { Orders } from "../../types/orders";
 import PaymentSummary from "../../components/PaymentSummary";
+import type { PaymentSummary as PaymentSummaryType } from "../../types/paymentSummary";
 
 type CheckoutPageProps = {
   carts: CartItem[];
+  paymentSummary: PaymentSummaryType | undefined;
   onUpdateDeliveryOption: (deliveryOptionId: string, productId: string) => void;
-  orders: Orders[]
+  onDeleteProduct: (productId: string) => void;
+  onUpdateQuantity: (productId: string, quantity: number) => void;
+  onSubmitOrder: (carts: CartItem[]) => Promise<boolean>;
+  fetchCartData: () => void;
 };
 
 export default function CheckoutPage({
   carts,
+  paymentSummary,
   onUpdateDeliveryOption,
-  orders
+  onDeleteProduct,
+  onUpdateQuantity,
+  onSubmitOrder,
+  fetchCartData,
 }: CheckoutPageProps) {
   return (
     <>
@@ -31,11 +39,18 @@ export default function CheckoutPage({
                   key={cart.productId}
                   cartItem={cart}
                   onUpdateDeliveryOption={onUpdateDeliveryOption}
+                  onDeleteProduct={onDeleteProduct}
+                  onUpdateQuantity={onUpdateQuantity}
                 />
               ))}
             </Activity>
           </div>
-          <PaymentSummary orders={orders}/>
+          <PaymentSummary
+            paymentSummary={paymentSummary}
+            onSubmitOrder={onSubmitOrder}
+            fetchCartData={fetchCartData}
+            carts={carts}
+          />
         </div>
       </div>
     </>

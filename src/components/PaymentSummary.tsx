@@ -1,55 +1,89 @@
-import type { Orders } from "../types/orders";
+import { Activity, useState } from "react";
+import type { CartItem } from "../types/cartItem";
+import type { PaymentSummary as PaymentSummaryType } from "../types/paymentSummary";
 import { centsToDollar } from "../utils/converter";
+import { LoaderCircleIcon } from "./LoaderCircleIcon";
 
 type PaymentSummaryProps = {
-  orders: Orders[];
+  paymentSummary: PaymentSummaryType | undefined;
+  carts: CartItem[];
+  onSubmitOrder: (carts: CartItem[]) => Promise<boolean>;
+  fetchCartData: () => void;
 };
 
-export default function PaymentSummary({ orders }: PaymentSummaryProps) {
-  let totalOrderItem = 0;
-  let totalOrderProductPrice = 0;
-  if (orders.length > 0) {
-    orders.forEach((order) => {
-      order.products.forEach((product) => {
-        totalOrderItem += product.quantity;
-        totalOrderProductPrice += (product.product.priceCents * product.quantity);
-      });
-    });
-  }
+export default function PaymentSummary({
+  paymentSummary,
+  carts,
+  onSubmitOrder,
+  fetchCartData,
+}: PaymentSummaryProps) {
+  const [isLoading, setIsLoading] = useState(false);
 
+  async function onSubmit() {
+    if (carts.length > 0) {
+      setIsLoading(true);
+      const submitStatus = await onSubmitOrder(carts);
+
+      setTimeout(() => {
+        if (submitStatus) {
+          alert("Submit Order Successfully");
+        } else {
+          alert("Submit Order Failed");
+        }
+
+        setIsLoading(false);
+        fetchCartData();
+      }, 3000);
+    }
+  }
   return (
     <div className="payment-summary">
       <div className="payment-summary-title">Payment Summary</div>
 
       <div className="payment-summary-row">
-        <div>Items ({totalOrderItem}):</div>
+        <div>Items ({paymentSummary?.totalItems || 0}):</div>
         <div className="payment-summary-money">
-          ${centsToDollar(totalOrderProductPrice)}
+          ${centsToDollar(paymentSummary?.productCostCents || 0)}
         </div>
       </div>
 
       <div className="payment-summary-row">
         <div>Shipping &amp; handling:</div>
-        <div className="payment-summary-money">$4.99</div>
+        <div className="payment-summary-money">
+          ${centsToDollar(paymentSummary?.shippingCostCents || 0)}
+        </div>
       </div>
 
       <div className="payment-summary-row subtotal-row">
         <div>Total before tax:</div>
-        <div className="payment-summary-money">$47.74</div>
+        <div className="payment-summary-money">
+          ${centsToDollar(paymentSummary?.totalCostBeforeTaxCents || 0)}
+        </div>
       </div>
 
       <div className="payment-summary-row">
         <div>Estimated tax (10%):</div>
-        <div className="payment-summary-money">$4.77</div>
+        <div className="payment-summary-money">
+          ${centsToDollar(paymentSummary?.taxCents || 0)}
+        </div>
       </div>
 
       <div className="payment-summary-row total-row">
         <div>Order total:</div>
-        <div className="payment-summary-money">$52.51</div>
+        <div className="payment-summary-money">
+          ${centsToDollar(paymentSummary?.totalCostCents || 0)}
+        </div>
       </div>
 
-      <button className="place-order-button button-primary">
-        Place your order
+      <button
+        className="place-order-button button-primary"
+        onClick={() => onSubmit()}
+        disabled={carts.length < 1}
+      >
+        <Activity mode={isLoading ? "visible" : "hidden"}>
+          <LoaderCircleIcon animate={true} /> <span>Loading ...</span>
+        </Activity>
+        {!isLoading && "Place your order"}
       </button>
     </div>
   );
