@@ -2,6 +2,7 @@
 
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Products from "./Product";
 
 describe("Product Component", () => {
@@ -19,13 +20,30 @@ describe("Product Component", () => {
 
   it("displays the product detail correctly", async () => {
     // make fake function
-    const fn = vi.fn();
-    render(<Products product={initProduct} onAddProductToCart={fn} />);
+    render(<Products product={initProduct} onAddProductToCart={vi.fn()} />);
 
     // check fake web page
     // check if the component with some text is exist. Eor ex : search component product by product name
     expect(
       screen.getByText("Black and Gray Athletic Cotton Socks - 6 Pairs")
     ).toBeInTheDocument();
+  });
+
+  it("add product to cart button", async () => {
+    const onAddProductToCart = vi.fn();
+    render(
+      <Products product={initProduct} onAddProductToCart={onAddProductToCart} />
+    );
+
+    const user = userEvent.setup();
+
+    const addToCartBtn = screen.getByTestId("btn-add-product-to-cart-test");
+
+    await user.click(addToCartBtn);
+
+    expect(onAddProductToCart).toHaveBeenCalledWith(
+        initProduct.id,
+        1
+    );
   });
 });

@@ -76,7 +76,7 @@ export default function Products({
         Added
       </div>
 
-      <button onClick={onClickAddCart} className="add-to-cart-button button-primary">
+      <button data-testid="btn-add-product-to-cart-test" onClick={onClickAddCart} className="add-to-cart-button button-primary">
         Add to Cart
       </button>
     </div>
