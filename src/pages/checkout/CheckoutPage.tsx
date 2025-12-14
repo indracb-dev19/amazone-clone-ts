@@ -19,7 +19,7 @@ export default function CheckoutPage({
 }: CheckoutPageProps) {
   return (
     <>
-      <CheckoutHeader />
+      <CheckoutHeader carts={carts} />
       <div className="checkout-page">
         <div className="page-title">Review your order</div>
 

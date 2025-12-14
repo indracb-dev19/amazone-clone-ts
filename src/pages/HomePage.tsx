@@ -7,9 +7,10 @@ import type { CartItem } from "../types/cartItem";
 
 type HomePageProps = {
   carts: CartItem[];
+  onAddProductToCart: (productId: string, quantity: number) => Promise<boolean>
 };
 
-export default function HomePage({ carts }: HomePageProps) {
+export default function HomePage({ carts, onAddProductToCart }: HomePageProps) {
   const { products } = useProduct();
 
   return (
@@ -19,7 +20,7 @@ export default function HomePage({ carts }: HomePageProps) {
         <div className="products-grid">
           <Activity mode={products.length > 0 ? "visible" : "hidden"}>
             {products.map((product) => (
-              <Products key={product.id} product={product} />
+              <Products key={product.id} product={product} onAddProductToCart={onAddProductToCart} />
             ))}
           </Activity>
         </div>
