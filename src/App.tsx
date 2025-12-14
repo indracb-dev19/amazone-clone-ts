@@ -14,7 +14,7 @@ function App() {
     addProductToCart,
     deleteProductFromCart,
     updateQuantity,
-    fetchData
+    fetchData,
   } = useCart();
   const { orders, submitOrder } = useOrder();
   return (
@@ -43,7 +43,13 @@ function App() {
         />
         <Route
           path="/orders"
-          element={<OrdersPage carts={carts} orders={orders} />}
+          element={
+            <OrdersPage
+              carts={carts}
+              orders={orders}
+              onAddProductToCart={addProductToCart}
+            />
+          }
         />
         <Route
           path="/tracking/:orderId/:productId"

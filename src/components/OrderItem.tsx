@@ -5,9 +5,13 @@ import OrderDetail from "./OrderDetail";
 
 type OrderItemProps = {
   orderItem: Orders;
+  onAddProductToCart: (productId: string, quantity: number) => void;
 };
 
-export default function OrderItem({ orderItem }: OrderItemProps) {
+export default function OrderItem({
+  orderItem,
+  onAddProductToCart,
+}: OrderItemProps) {
   return (
     <div className="order-container">
       <div className="order-header">
@@ -29,8 +33,15 @@ export default function OrderItem({ orderItem }: OrderItemProps) {
       </div>
 
       <div className="order-details-grid">
-        <Activity mode={orderItem.products.length > 0 ? 'visible' : 'hidden'} >
-            {orderItem.products.map(product => <OrderDetail key={product.productId} orderId={orderItem.id} item={product} />)}
+        <Activity mode={orderItem.products.length > 0 ? "visible" : "hidden"}>
+          {orderItem.products.map((product) => (
+            <OrderDetail
+              key={product.productId}
+              orderId={orderItem.id}
+              item={product}
+              onAddProductToCart={onAddProductToCart}
+            />
+          ))}
         </Activity>
       </div>
     </div>

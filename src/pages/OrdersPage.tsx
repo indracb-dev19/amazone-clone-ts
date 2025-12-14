@@ -8,8 +8,13 @@ import OrderItem from "../components/OrderItem";
 type OrdersPageProps = {
   carts: CartItem[];
   orders: Orders[];
+  onAddProductToCart: (productId: string, quantity: number) => void;
 };
-export default function OrdersPage({ carts, orders }: OrdersPageProps) {
+export default function OrdersPage({
+  carts,
+  orders,
+  onAddProductToCart,
+}: OrdersPageProps) {
   return (
     <>
       <Header carts={carts} />
@@ -20,7 +25,11 @@ export default function OrdersPage({ carts, orders }: OrdersPageProps) {
         <div className="orders-grid">
           <Activity mode={orders.length > 0 ? "visible" : "hidden"}>
             {orders.map((order) => (
-              <OrderItem key={order.id} orderItem={order} />
+              <OrderItem
+                key={order.id}
+                orderItem={order}
+                onAddProductToCart={onAddProductToCart}
+              />
             ))}
           </Activity>
         </div>

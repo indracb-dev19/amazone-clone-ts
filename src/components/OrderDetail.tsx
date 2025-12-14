@@ -4,10 +4,15 @@ import { msToDate } from "../utils/converter";
 
 type OrderDetailProps = {
   item: Omit<CartItem, "updatedAt" | "createdAt">;
-  orderId: string
+  orderId: string;
+  onAddProductToCart: (productId: string, quantity: number) => void;
 };
 
-export default function OrderDetail({ item, orderId}: OrderDetailProps) {    
+export default function OrderDetail({
+  item,
+  orderId,
+  onAddProductToCart,
+}: OrderDetailProps) {
   return (
     <>
       <div className="product-image-container">
@@ -20,7 +25,10 @@ export default function OrderDetail({ item, orderId}: OrderDetailProps) {
           Arriving on: {msToDate(item.estimatedDeliveryTimeMs)}
         </div>
         <div className="product-quantity">Quantity: {item.quantity}</div>
-        <button className="buy-again-button button-primary">
+        <button
+          className="buy-again-button button-primary"
+          onClick={() => onAddProductToCart(item.productId, 1)}
+        >
           <img className="buy-again-icon" src="images/icons/buy-again.png" />
           <span className="buy-again-message">Add to Cart</span>
         </button>
